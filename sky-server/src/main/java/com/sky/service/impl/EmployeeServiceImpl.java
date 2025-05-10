@@ -68,9 +68,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO
      */
-    public void save(EmployeeDTO employeeDTO){
+    public void save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
 //        使用对象属性拷贝
         BeanUtils.copyProperties(employeeDTO, employee);
@@ -92,6 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 实现员工分页查询
+     *
      * @param employeePageQueryDTO
      * @return
      */
@@ -105,6 +107,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         long total = page.getTotal();
         List<Employee> result = page.getResult();
         return new PageResult(total, result);
+    }
+
+    /**
+     * 修改员工状态
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+//        Employee employee = new Employee();
+//        employee.setStatus(status);
+//        employee.setId(id);
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        employeeMapper.update(employee);
     }
 
 
