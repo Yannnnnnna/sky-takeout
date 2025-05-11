@@ -52,12 +52,12 @@ public class CategoryController {
 //        return Result.success();
 //    }
 
-//    @GetMapping("/list")
-//    @ApiOperation("根据id查询分类")
-//    public Result<List<Category>> selectByID(Integer id){
-//        log.info("查找分类");
-//        List = categoryService.selectById(id);
-//        return Result.success(category);
-//    }
+    @GetMapping("/list")
+    @ApiOperation("根据id查询分类")
+    public Result<List<Category>> selectByID(Integer id){
+        log.info("查找分类");
+        List<Category> list= categoryService.selectById(id);
+        return Result.success(list);
+    }
 
 }

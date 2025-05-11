@@ -4,6 +4,8 @@ import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
 
+import java.util.List;
+
 /**
  * @author wyr on 2025/5/10
  */
@@ -13,7 +15,7 @@ public interface CategoryService {
      * @param id
      * @return
      */
-    Category selectById(Integer id);
+    List<Category> selectById(Integer id);
 
     /**
      * 分页查询

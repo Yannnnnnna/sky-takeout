@@ -27,9 +27,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public Category selectById(Integer id) {
-        Category category = categoryMapper.selectById(id);
-        return category;
+    public List<Category> selectById(Integer id) {
+        List<Category> list = categoryMapper.selectById(id);
+        return list;
     }
 
     /**
