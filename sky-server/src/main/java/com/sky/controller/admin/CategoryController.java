@@ -24,12 +24,19 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
-//    @PutMapping
-//    @ApiOperation("修改分类")
-//    public Result updateCategory(@RequestBody CategoryDTO categoryDTO){
-//
-//        return Result.success();
-//    }
+
+    /**
+     * 修改分类
+     * @param categoryDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改分类")
+    public Result updateCategory(@RequestBody CategoryDTO categoryDTO){
+        System.out.println(categoryDTO);
+        categoryService.updateCategory(categoryDTO);
+        return Result.success();
+    }
 
     /**
      * 分页查询

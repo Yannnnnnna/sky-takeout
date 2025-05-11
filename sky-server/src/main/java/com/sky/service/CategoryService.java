@@ -37,4 +37,10 @@ public interface CategoryService {
      * @param categoryDTO
      */
     void addCategory(CategoryDTO categoryDTO);
+
+    /**
+     * 修改分类
+     * @param categoryDTO
+     */
+    void updateCategory(CategoryDTO categoryDTO);
 }
