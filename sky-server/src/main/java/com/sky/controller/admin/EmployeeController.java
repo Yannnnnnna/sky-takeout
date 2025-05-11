@@ -73,6 +73,7 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
     @PostMapping
     @ApiOperation("新增员工")
     private Result save(@RequestBody EmployeeDTO employeeDTO){
@@ -93,6 +94,7 @@ public class EmployeeController {
         PageResult pageResult = employeeService.PageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
+
     @PostMapping("/status/{status}")
     @ApiOperation("修改员工状态")
     public Result startOrStop(@PathVariable Integer status, Long id){
