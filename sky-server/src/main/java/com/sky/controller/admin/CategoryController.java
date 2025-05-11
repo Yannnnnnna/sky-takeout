@@ -36,11 +36,14 @@ public class CategoryController {
         PageResult pageResult = categoryService.pageSelect(categoryPageQueryDTO);
         return Result.success(pageResult);
     }
-//    @PostMapping("/status/{status}")
-//    @ApiOperation("更新状态")
-//    public Result startOrStop(@PathVariable Integer status, Long id){
-//        return Result.success();
-//    }
+    @PostMapping("/status/{status}")
+    @ApiOperation("更新状态")
+    public Result startOrStop(@PathVariable Integer status, Long id){
+        log.info("更新状态");
+        System.out.println(id + " 状态 " + status);
+        categoryService.updateStatus(status, id);
+        return Result.success();
+    }
 //    @PostMapping
 //    @ApiOperation("添加分类")
 //    public Result addCategory(CategoryDTO categoryDTO){

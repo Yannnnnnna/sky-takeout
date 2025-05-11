@@ -46,4 +46,17 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> result = page.getResult();
         return new PageResult(total,result);
     }
+
+    /**
+     * 更新状态
+     * @param status
+     * @param id
+     */
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Category category = new Category();
+        category.setStatus(status);
+        category.setId(id);
+        categoryMapper.update(category);
+    }
 }
