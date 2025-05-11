@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
@@ -30,4 +31,10 @@ public interface CategoryService {
      * @param id
      */
     void updateStatus(Integer status, Long id);
+
+    /**
+     * 添加分类
+     * @param categoryDTO
+     */
+    void addCategory(CategoryDTO categoryDTO);
 }
