@@ -77,11 +77,19 @@ public class CategoryController {
         categoryService.addCategory(categoryDTO);
         return Result.success();
     }
-//    @DeleteMapping
-//    @ApiOperation("删除分类")
-//    public Result deleteCategory(Long id){
-//        return Result.success();
-//    }
+
+    /**
+     * 删除分类
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("删除分类")
+    public Result deleteCategory(Long id){
+        System.out.println(id);
+        categoryService.delete(id);
+        return Result.success();
+    }
 
     /**
      * 根据id查询分类
