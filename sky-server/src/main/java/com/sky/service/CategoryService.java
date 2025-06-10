@@ -4,49 +4,46 @@ import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
-
 import java.util.List;
 
-/**
- * @author wyr on 2025/5/10
- */
 public interface CategoryService {
+
     /**
-     * 根据id查找种类
-     * @param id
-     * @return
+     * 新增分类
+     * @param categoryDTO
      */
-    List<Category> selectById(Integer id);
+    void save(CategoryDTO categoryDTO);
 
     /**
      * 分页查询
      * @param categoryPageQueryDTO
      * @return
      */
-    PageResult pageSelect(CategoryPageQueryDTO categoryPageQueryDTO);
+    PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
     /**
-     * 更新状态
-     * @param status
+     * 根据id删除分类
      * @param id
      */
-    void updateStatus(Integer status, Long id);
-
-    /**
-     * 添加分类
-     * @param categoryDTO
-     */
-    void addCategory(CategoryDTO categoryDTO);
+    void deleteById(Long id);
 
     /**
      * 修改分类
      * @param categoryDTO
      */
-    void updateCategory(CategoryDTO categoryDTO);
+    void update(CategoryDTO categoryDTO);
 
     /**
-     * 删除分类
+     * 启用、禁用分类
+     * @param status
      * @param id
      */
-    void delete(Long id);
+    void startOrStop(Integer status, Long id);
+
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
+    List<Category> list(Integer type);
 }
