@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.MessageConstant;
 import com.sky.result.Result;
 import com.sky.utils.AliOssUtil;
 import io.swagger.annotations.Api;
@@ -32,23 +33,25 @@ public class CommonController {
      */
     @PostMapping("/upload")
     @ApiOperation("文件上传")
-    public Result<String> upload(MultipartFile file){ //名字要和前端一样
-        log.info("开始文件上传");
+    public Result<String> upload(MultipartFile file) {
+        log.info("文件上传接口被调用:{}",file);
+        String filePath = null;
         try {
-            //获取原始文件名
+            //  获取原始文件名
             String originalFilename = file.getOriginalFilename();
-            //截取原始文件名后缀
-            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            //构建文件新名称
-            String objectName  = UUID.randomUUID().toString()+extension;
-            //文件请求路径
-            String filePath = aliOssUtil.upload(file.getBytes(), objectName);
-            return Result.success(filePath);
-        } catch (IOException e) {
-            System.out.println("文件上传失败：" + e);
-        }
-        return null;
+            // 截取原始文件名的扩展名
+            String extName = originalFilename.substring(originalFilename.lastIndexOf("."));
+            // 生成新的文件名: UUID + 扩展名
+            String newFileName = UUID.randomUUID().toString() + extName;
 
+            // 文件上传请求路径
+            filePath = aliOssUtil.upload(file.getBytes(), newFileName);
+        }catch(IOException e){
+            e.printStackTrace();
+            log.error("文件上传失败:{}",e);
+            return Result.error(MessageConstant.UPLOAD_FAILED);
+        }
+        return Result.success(filePath);
     }
 
 }
