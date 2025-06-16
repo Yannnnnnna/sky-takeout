@@ -11,3 +11,7 @@ sky:
     access-key-id: LTAI5tAjvbHUSHPYZgXCSA8W
     access-key-secret: iKWWEpLJ0znRet70fUH1cioI0mGRAk
     bucket-name: yanna-buject
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
