@@ -12,9 +12,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜品管理
@@ -28,6 +30,8 @@ import java.util.List;
 public class DishController {
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 新增菜品
      *
@@ -38,6 +42,9 @@ public class DishController {
     @PostMapping()
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品：{}", dishDTO);
+        // 清除缓存
+        String key = "dish_" +dishDTO.getCategoryId();
+        redisTemplate.delete(key);
         dishService.saveWithFlavor(dishDTO);
         return Result.success();
 
@@ -59,6 +66,9 @@ public class DishController {
     @DeleteMapping
     public Result delete(@RequestParam List<Long> ids) {
         log.info("删除菜品，id：{}", ids);
+        // 清除缓存,清除所有菜品分类下的菜品缓存
+        Set keys = redisTemplate.keys("dish_*");
+        redisTemplate.delete(keys);
         dishService.delete(ids);
         return Result.success();
     }
@@ -86,6 +96,9 @@ public class DishController {
     @PutMapping
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("更新菜品信息：{}", dishDTO);
+        // 清除缓存,清除所有菜品分类下的菜品缓存
+        Set keys = redisTemplate.keys("dish_*");
+        redisTemplate.delete(keys);
         dishService.update(dishDTO);
         return Result.success();
     }
@@ -105,5 +118,21 @@ public class DishController {
         List<DishVO> list = dishService.listWithFlavor(dish);
 
         return Result.success(list);
+    }
+    /**
+     * 起售停售商品
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation("起售停售商品")
+    @PostMapping("/status/{status}")
+    public Result status(@PathVariable Integer status, Long id) {
+        log.info("起售停售商品，id：{}，status：{}", id, status);
+        dishService.startStop(status,id);
+        // 清除缓存,清除所有菜品分类下的菜品缓存
+        Set keys = redisTemplate.keys("dish_*");
+        redisTemplate.delete(keys);
+        return Result.success();
     }
 }

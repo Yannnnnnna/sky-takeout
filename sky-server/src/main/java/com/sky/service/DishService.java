@@ -52,4 +52,10 @@ public interface DishService {
      */
     List<DishVO> listWithFlavor(Dish dish);
 
+    /**
+     * 启用或停用菜品
+     * @param id
+     * @param status
+     */
+    void startStop(Integer status, Long id);
 }

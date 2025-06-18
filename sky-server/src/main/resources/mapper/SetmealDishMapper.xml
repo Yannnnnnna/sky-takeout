@@ -18,8 +18,10 @@
 
     <select id="getSetmealIdsByDishIds" resultType="java.lang.Long">
         select setmeal_id from setmeal_dish where dish_id in
-        <foreach item="item" index="index" collection="dishIds" open="(" separator="," close=")">
+        <foreach item="item"  collection="ids" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
+
+
 </mapper>
