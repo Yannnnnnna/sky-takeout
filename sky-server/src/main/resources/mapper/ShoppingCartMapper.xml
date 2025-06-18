@@ -3,9 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.ShoppingCartMapper">
 
-    <insert id="add" parameterType="com.sky.dto.ShoppingCartDTO">
 
-    </insert>
     <select id="list" resultType="com.sky.entity.ShoppingCart" parameterType="com.sky.entity.ShoppingCart">
         select * from shopping_cart
         <where>
