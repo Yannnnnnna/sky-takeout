@@ -585,4 +585,25 @@ public class OrderServiceImpl implements OrderService {
 
         // 如果程序能执行到这里，说明所有检查都已通过，地址在配送范围内。
     }
+
+    /**
+     * 催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders orders = orderMapper.getById(id);
+        if(orders == null){
+            //抛出异常，订单不存在
+            throw new OrderBusinessException("订单不存在");
+        }
+        Map map = new HashMap<>();
+        map.put("type", 2); //催单类型
+        map.put("orderId", id);
+
+        map.put("content","订单号："+  orders.getNumber()+"请尽快处理");
+        String json = JSON.toJSONString(map);
+        //通过WebSocket向客户端推送消息 type,orderId, content
+        webSocketServer.sendToAllClient(json);
+    }
 }
