@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author wyr on 2025/6/19
@@ -62,4 +63,13 @@ public interface OrderMapper {
      */
     @Select("select count(id) from orders where status = #{status}")
     Integer getCountByStatus(Integer status);
+
+    /**
+     * 查询超时订单
+     * @param status
+     * @param time
+     * @return
+     */
+    @Select("select * from orders where status = #{status} and order_time < #{time}")
+    List<Orders> getTimeoutOrders(Integer status, LocalDateTime time);
 }
