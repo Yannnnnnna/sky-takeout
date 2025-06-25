@@ -2,9 +2,11 @@ package com.sky.service.impl;
 
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
+import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.TurnoverReportVO;
 
+import com.sky.vo.UserReportVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import java.util.Map;
 public class ReportServiceImpl implements ReportService {
     @Autowired
     private OrderMapper orderMapper; // 假设有一个订单数据访问层
+    @Autowired
+    private UserMapper userMapper; // 假设有一个用户数据访问层
     /**
      * 营业额统计
      * 统计指定时间段内的营业额
@@ -57,6 +61,43 @@ public class ReportServiceImpl implements ReportService {
         return TurnoverReportVO.builder()
                 .dateList(StringUtils.join(dateList, ","))
                 .turnoverList(StringUtils.join(turnoverList, ","))
+                .build();
+    }
+    /**
+     * 用户统计
+     * 统计指定时间段内的用户数据
+     * @param begin
+     * @param end
+     * @return
+     */
+    @Override
+    public UserReportVO userStatistics(LocalDate begin, LocalDate end) {
+        //存放每天的日期
+        List<LocalDate> dateList = new ArrayList<>();
+        dateList.add(begin);
+        while (!begin.isEqual(end)) {
+            begin = begin.plusDays(1);
+            dateList.add(begin);
+        }
+        List<Integer> userCountList = new ArrayList<>();
+        List<Integer> newUserCountList = new ArrayList<>();
+        for (LocalDate localDate : dateList) {
+            LocalDateTime beginTime = LocalDateTime.of(localDate, LocalTime.MIN);
+            LocalDateTime endTime = LocalDateTime.of(localDate, LocalTime.MAX);
+            Map map = new HashMap();
+            map.put("end", endTime);
+            Integer userCount = userMapper.countByMap(map);
+            userCountList.add(userCount == null ? 0 : userCount);
+
+            map.put("begin", beginTime);
+            Integer newUserCount = userMapper.countByMap(map);
+            newUserCountList.add(newUserCount == null ? 0 : newUserCount);
+
+        }
+        return UserReportVO.builder()
+                .dateList(StringUtils.join(dateList, ","))
+                .totalUserList(StringUtils.join(userCountList, ","))
+                .newUserList(StringUtils.join(newUserCountList, ","))
                 .build();
     }
 }
