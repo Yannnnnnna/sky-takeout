@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
@@ -80,5 +81,19 @@ public interface OrderMapper {
      * @return
      */
     @Select("select count(id) from orders where status = #{status} and order_time >= #{begin} and order_time <= #{end}")
-    Double countByMap(Map map);
+    Integer countByMap(Map map);
+    /**
+     * 根据条件统计订单数量
+     * @param map
+     * @return
+     */
+    Integer getCountByMap(Map map);
+
+    /**
+     * 获取订单统计数据
+     * @param
+     * @param
+     * @return
+     */
+    List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin, LocalDateTime end);
 }

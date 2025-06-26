@@ -15,7 +15,7 @@
     <!--                #{estimatedDeliveryTime}, #{deliveryStatus}, #{deliveryTime},-->
     <!--                #{packAmount}, #{tablewareNumber}, #{tablewareStatus})-->
     <!--    </insert>-->
-    <insert id="insert" parameterType="Orders" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.sky.entity.Orders" useGeneratedKeys="true" keyProperty="id">
         insert into orders (number, status, user_id, address_book_id, order_time, checkout_time, pay_method, pay_status,
                             amount, remark, phone, address, consignee, estimated_delivery_time, delivery_status,
                             pack_amount, tableware_number, tableware_status)
@@ -61,4 +61,33 @@
         </where>
         order by order_time desc
     </select>
+    <select id="getCountByMap" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id) from orders
+        <where>
+            <if test="begin != null">
+                and order_time &gt;= #{begin}
+            </if>
+            <if test="end != null">
+                and order_time &lt;= #{end}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="getSalesTop10" resultType="com.sky.dto.GoodsSalesDTO">
+        select od.name, sum(od.number) as number
+        from orders o, order_detail od
+        where od.order_id = o.id and o.status = 5
+        <if test="begin != null">
+            and o.order_time &gt;= #{begin}
+        </if>
+        <if test="end != null">
+            and o.order_time &lt;= #{end}
+        </if>
+        group by od.name
+        order by number desc
+        limit 0,10
+    </select>
+
 </mapper>
